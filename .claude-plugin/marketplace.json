@@ -1,15 +1,19 @@
 {
-  "name": "mattpocock",
+  "name": "zar",
   "owner": {
-    "name": "Matt Pocock",
-    "url": "https://www.aihero.dev"
+    "name": "avangardzar",
+    "url": "https://github.com/avangardzar"
   },
-  "description": "Matt Pocock's skills for real engineering, as an installable Claude Code plugin.",
+  "description": "Personal skills marketplace.",
   "plugins": [
     {
-      "name": "mattpocock-skills",
-      "source": "./",
-      "description": "Matt Pocock's agent skills for real engineering (grilling, spec/ticket flows, TDD, code review, domain modelling and more).",
+      "name": "zar-skills",
+      "description": "Personal fork of Matt Pocock's agent skills, kept in sync with upstream and extended with own skills.",
+      "source": {
+        "source": "github",
+        "repo": "avangardzar/skills",
+        "ref": "main"
+      },
       "category": "engineering",
       "keywords": [
         "engineering",

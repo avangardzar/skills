@@ -1,0 +1,47 @@
+name: Sync upstream mirror
+
+# Обновляет ветку-зеркало из первоисточника. Единственный процесс, которому
+# принадлежит запись в неё: человек в зеркало не пишет (ADR-0001).
+#
+# Расписание обязано быть литералом: ключи внутри `on:` не принимают выражения
+# и контексты, `${{ vars.* }}` здесь не раскроется. Параметры, которые читают
+# шаги, вынесены в `env:` ниже.
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # 06:00 MSK
+  workflow_dispatch:
+
+concurrency: sync-upstream
+
+env:
+  UPSTREAM_URL: https://github.com/mattpocock/skills.git
+  UPSTREAM_BRANCH: main
+  MIRROR_BRANCH: upstream
+
+jobs:
+  sync:
+    name: Fast-forward mirror
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout mirror
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.MIRROR_BRANCH }}
+          fetch-depth: 0
+
+      - name: Fetch upstream
+        # --no-tags: иначе git притащит теги, достижимые из скачиваемой ветки,
+        # а они именуют версии чужого плагина.
+        run: |
+          git remote add mattpocock "$UPSTREAM_URL"
+          git fetch --no-tags mattpocock "$UPSTREAM_BRANCH"
+
+      - name: Fast-forward or fail
+        # --ff-only: если зеркало разошлось с первоисточником, значит в него
+        # кто-то писал руками. Это ошибка, а не повод делать merge-коммит.
+        run: |
+          git merge --ff-only FETCH_HEAD
+          git push origin "HEAD:$MIRROR_BRANCH"
