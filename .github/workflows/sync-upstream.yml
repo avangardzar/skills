@@ -6,6 +6,10 @@ name: Sync upstream mirror
 # Расписание обязано быть литералом: ключи внутри `on:` не принимают выражения
 # и контексты, `${{ vars.* }}` здесь не раскроется. Параметры, которые читают
 # шаги, вынесены в `env:` ниже.
+#
+# Сторонних действий здесь нет намеренно. Всё, что нужно, — git, который на
+# раннере уже есть; отсутствие зависимостей избавляет от пиннинга по SHA и от
+# доверия чужому коду, имеющему доступ к токену с правом записи.
 
 on:
   schedule:
@@ -13,6 +17,9 @@ on:
   workflow_dispatch:
 
 concurrency: sync-upstream
+
+# По умолчанию токен не может ничего; право записи выдаётся одному заданию.
+permissions: {}
 
 env:
   UPSTREAM_URL: https://github.com/mattpocock/skills.git
@@ -23,25 +30,34 @@ jobs:
   sync:
     name: Fast-forward mirror
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
-      - name: Checkout mirror
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ env.MIRROR_BRANCH }}
-          fetch-depth: 0
-
-      - name: Fetch upstream
-        # --no-tags: иначе git притащит теги, достижимые из скачиваемой ветки,
-        # а они именуют версии чужого плагина.
+      - name: Fast-forward mirror onto upstream
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git remote add mattpocock "$UPSTREAM_URL"
-          git fetch --no-tags mattpocock "$UPSTREAM_BRANCH"
+          set -euo pipefail
 
-      - name: Fast-forward or fail
-        # --ff-only: если зеркало разошлось с первоисточником, значит в него
-        # кто-то писал руками. Это ошибка, а не повод делать merge-коммит.
-        run: |
+          # Только ветка-зеркало и без тегов: теги первоисточника именуют
+          # версии чужого плагина и в этом репозитории не нужны.
+          git clone --quiet --no-tags --single-branch --branch "$MIRROR_BRANCH" \
+            "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" mirror
+          cd mirror
+
+          git remote add source "$UPSTREAM_URL"
+          git fetch --no-tags source "$UPSTREAM_BRANCH"
+
+          before=$(git rev-parse HEAD)
+          after=$(git rev-parse FETCH_HEAD)
+          if [ "$before" = "$after" ]; then
+            echo "Зеркало уже на $after — делать нечего."
+            exit 0
+          fi
+
+          # --ff-only: если зеркало разошлось с первоисточником, значит в него
+          # кто-то писал руками. Это ошибка, а не повод делать merge-коммит.
           git merge --ff-only FETCH_HEAD
           git push origin "HEAD:$MIRROR_BRANCH"
+          echo "Зеркало: $before -> $after"
