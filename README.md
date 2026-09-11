@@ -1,121 +1,121 @@
 # zar-skills
 
-Личный форк [**mattpocock/skills**](https://github.com/mattpocock/skills) — набора навыков для ИИ-агентов, собранного Мэттом Пококом.
+A personal fork of [**mattpocock/skills**](https://github.com/mattpocock/skills), the agent skill set built by Matt Pocock.
 
-## Спасибо первоисточнику
+## Thanks to the source
 
-Всё содержательное в этом репозитории придумано и написано [Мэттом Пококом](https://github.com/mattpocock). Он вложил в эти навыки десятилетия инженерного опыта, довёл их до состояния, в котором ими можно пользоваться каждый день, и **отдал людям бесплатно, под лицензией MIT** — вместе с документацией, объяснениями и рассуждениями о том, почему устроено именно так.
+Everything of substance in this repository was written by [Matt Pocock](https://github.com/mattpocock). He put decades of engineering experience into these skills, took them to the point where they hold up in daily use, and then **gave them away for free under MIT**, together with the documentation, the explanations, and the reasoning behind each choice.
 
-Это редкая щедрость. Чаще подобное превращают в закрытый продукт или курс, а здесь — открытый репозиторий, который можно читать, копировать и переделывать под себя. Этот форк существует только потому, что такая возможность была дана.
+That is rare generosity. Work like this usually becomes a closed product or a paid course. Instead it is an open repository you can read, copy, and reshape for yourself. This fork exists only because that was allowed.
 
-Если методика окажется полезной и вам — идите к первоисточнику, а не сюда:
+If the methodology helps you too, go to the source rather than here:
 
-- **Репозиторий:** https://github.com/mattpocock/skills
-- **Установка для всех:** `claude plugins install mattpocock-skills`
-- **Рассылка автора:** https://www.aihero.dev/s/skills-newsletter
+- **Repository:** https://github.com/mattpocock/skills
+- **Install for everyone:** `claude plugins install mattpocock-skills`
+- **His newsletter:** https://www.aihero.dev/s/skills-newsletter
 
-Оригинальное эссе автора о том, зачем эти навыки нужны, сохранено ниже без изменений.
+His original essay on why these skills exist is kept below, unchanged.
 
-## Что это за форк
+## What this fork is
 
-Набор Мэтта нужен целиком, но в своей редакции: часть навыков лишняя, часть хочется переписать, часть добавить свою. При этом обновления первоисточника терять нельзя.
+The whole set is useful, but not in someone else's edit: some skills are surplus here, some want rewriting, some want adding. At the same time, upstream improvements should not be lost.
 
-Форк решает обе задачи сразу. Он одновременно зеркало чужого репозитория, собственная редакция и плагин Claude Code.
+The fork does both at once. It is a mirror of the source repository, an edit of my own, and a Claude Code plugin, all in one place.
 
-## Ветки
+## Branches
 
-Три ветки, у каждой **ровно один процесс, который в неё пишет**. Это главное правило конструкции.
+Three branches, each with **exactly one process that writes to it**. Everything else follows from that rule.
 
-| Ветка | Кто пишет | Назначение |
+| Branch | Written by | Purpose |
 | --- | --- | --- |
-| `upstream` | только робот синхронизации | **Зеркало.** Точная копия ветки `main` первоисточника |
-| `dev` | только человек | **Работа.** Здесь правятся навыки и разбираются конфликты |
-| `main` | только промоушен из `dev` | **Витрина.** Из неё собирается плагин |
+| `upstream` | the sync robot only | **Mirror.** An exact copy of the source repository's `main` |
+| `dev` | a human only | **Work.** Skills are edited and conflicts resolved here |
+| `main` | promotion from `dev` only | **Shop window.** The plugin is built from it |
 
-### `upstream` — зеркало
+### `upstream`, the mirror
 
-Обновляется автоматически раз в сутки: `.github/workflows/sync-upstream.yml` подтягивает свежий `main` первоисточника через `git merge --ff-only`.
+Updated automatically once a day: `.github/workflows/sync-upstream.yml` fetches the source repository's `main` and fast-forwards onto it.
 
-Человек в неё не пишет никогда, и это не соглашение, а защита: ruleset запрещает удаление и force-push, обойти его не может никто, включая владельца репозитория. Как только в зеркало попадёт посторонний коммит, оно перестанет быть зеркалом, а синхронизация начнёт падать — намеренно, вместо того чтобы заминать расхождение merge-коммитом.
+No human ever writes to it. That is not a convention but a rule enforced by GitHub: a ruleset forbids deletion and force-push, and nobody can bypass it, the repository owner included. The moment a stray commit lands in the mirror it stops being a mirror, and the sync starts failing. It fails on purpose: the workflow uses `git merge --ff-only` so a divergence surfaces as an error instead of being papered over with a merge commit.
 
-### `dev` — работа
+### `dev`, the work
 
-Единственная ветка, в которую делаются коммиты. Сюда же целится Dependabot.
+The only branch that receives commits. Dependabot targets it too.
 
-Взять новое от Мэтта — тоже здесь: `upstream` мержится в `dev` вручную, конфликты разбираются по смыслу. Автоматически это не происходит: решение «беру / не беру» принимает человек, а не робот.
+Picking up new work from upstream happens here as well: `upstream` is merged into `dev` by hand and conflicts are resolved on their merits. This is deliberately not automatic. Whether to take a new skill is a decision for a person, not for a robot.
 
-### `main` — витрина
+### `main`, the shop window
 
-То, что видят пользователи плагина. Попасть сюда можно только промоушеном.
+What plugin users actually see. The only way in is a promotion.
 
-Коммит, записанный в `main` в обход `dev`, лишает следующий промоушен fast-forward — поэтому ветка защищена ruleset'ом от удаления и force-push.
+A commit written straight to `main` costs the next promotion its fast-forward, which is why the branch carries the same protection against deletion and force-push.
 
-## Плагин
+## The plugin
 
-Плагин называется `zar-skills`. Репозиторий сам себе маркетплейс: `.claude-plugin/marketplace.json` объявляет каталог `zar` с единственным плагином.
+The plugin is called `zar-skills`. The repository is its own marketplace: `.claude-plugin/marketplace.json` declares a catalogue named `zar` holding a single plugin.
 
-### Загрузка идёт из `main`
+### It loads from `main`
 
 ```json
 "source": { "source": "github", "repo": "avangardzar/skills", "ref": "main" }
 ```
 
-Источник указан **веткой**, а не коммитом. Отсюда прямое следствие: **пользователь видит только то, что попало в `main`.** Коммиты в `dev` для него не существуют.
+The source is a **branch**, not a commit. One consequence matters more than the rest: **users see only what has reached `main`.** Commits sitting on `dev` do not exist for them.
 
-### Установка
+### Install
 
 ```bash
 claude plugin marketplace add avangardzar/skills
 claude plugin install zar-skills@zar
 ```
 
-Затем перезапустить Claude Code. Навыки вызываются как `/zar-skills:<имя>`, например `/zar-skills:grilling`.
+Then restart Claude Code. Skills are invoked as `/zar-skills:<name>`, for example `/zar-skills:grilling`.
 
-### Обновление
+### Update
 
 ```bash
 claude plugin update zar-skills@zar
 ```
 
-> **Важно.** Механизм обновления сравнивает поле `version` в `plugin.json`, а не коммит. Если `main` ушёл вперёд, но версия та же, команда ответит `already at the latest version` и ничего не сделает. Поэтому подъём версии — обязательная часть промоушена, а не формальность.
+> **Worth knowing.** The update mechanism compares the `version` field in `plugin.json`, not the commit. If `main` has moved ahead but the version has not, the command reports `already at the latest version` and does nothing. That is why bumping the version is a load-bearing step of a promotion rather than a ceremony.
 
-### Опробовать, не устанавливая
+### Try it without installing
 
 ```bash
 claude --plugin-dir ~/skills
 ```
 
-Загружает плагин из каталога только на текущую сессию. Локальный каталог перебивает установленный плагин того же имени.
+Loads the plugin from a directory for the current session only. A local directory takes precedence over an installed plugin of the same name.
 
-## Промоушен
+## Promotion
 
-Перенос готового из `dev` в `main`:
+Moving finished work from `dev` to `main`:
 
 ```bash
 git checkout main && git merge --ff-only dev
 claude plugin validate .
-claude plugin tag                                  # тег zar-skills--v<версия>
+claude plugin tag                                  # creates zar-skills--v<version>
 git push origin main
-git push origin refs/tags/zar-skills--v<версия>    # поимённо, не --tags
+git push origin refs/tags/zar-skills--v<version>   # by name, never --tags
 ```
 
-Версия форка считает **промоушены**, а не релизы первоисточника, и живёт в трёх файлах: `plugin.json`, `package.json` и `package-lock.json` (последний пересобирается через `npm install --package-lock-only`, а не правится руками).
+The fork's version counts **promotions**, not upstream releases, and it lives in three files: `plugin.json`, `package.json`, and `package-lock.json`. The last one is regenerated with `npm install --package-lock-only` rather than edited by hand.
 
-Changesets первоисточника в форке не используются. Они остаются на диске нетронутыми: удалять файлы, которые Мэтт продолжает править, значит получить конфликт при каждой синхронизации.
+Upstream's changesets machinery is unused here, and left on disk untouched. Deleting files that upstream keeps editing would buy a conflict on every mirror sync.
 
-## Что в плагин не попадает
+## What the plugin leaves out
 
-Навыки лежат в бакетах. В плагин едут только `engineering/` и `productivity/`; `misc/`, `in-progress/` и `deprecated/` остаются в репозитории, но пользователю не отдаются.
+Skills live in bucket folders. Only `engineering/` and `productivity/` ship; `misc/`, `in-progress/`, and `deprecated/` stay in the repository without reaching users.
 
-Список навыков в `.claude-plugin/plugin.json` ведётся **вручную**. Появление у Мэтта нового навыка — повод сознательно решить «беру / не беру», а не повод для молчаливого включения. Ненужный навык исключается из списка, но не удаляется с диска.
+The skill list in `.claude-plugin/plugin.json` is maintained **by hand**. A new skill appearing upstream is a reason to decide whether to take it, not a reason for it to arrive silently. A skill that is not wanted gets dropped from the list, never deleted from disk.
 
-## Лицензия
+## Licence
 
-MIT, как и у первоисточника. См. [LICENSE](./LICENSE).
+MIT, same as the source. See [LICENSE](./LICENSE).
 
 ---
 
-*Ниже — оригинальный текст автора первоисточника, сохранён без изменений.*
+*What follows is the original author's text, kept unchanged.*
 
 ## Why These Skills Exist
 
