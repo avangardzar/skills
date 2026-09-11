@@ -1,0 +1,30 @@
+# Куда Dependabot шлёт обновления.
+#
+# target-branch обязателен: по умолчанию PR приходят в ветку по умолчанию,
+# то есть в `main`. Но `main` наполняется только промоушеном из `dev`
+# (ADR-0005), и коммит, попавший в `main` в обход `dev`, ломает
+# fast-forward у следующего промоушена. Поэтому цель — `dev`.
+#
+# Сам этот файл при этом читается с ветки по умолчанию, а не с `dev`:
+# чтобы настройка заработала, он должен доехать до `main` промоушеном.
+
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+
+  # Сторонних actions здесь нет намеренно, обновлять пока нечего. Запись
+  # стоит заранее: если однажды появится `actions/checkout`, версии
+  # начнут подтягиваться сами, без правки этого файла.
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
