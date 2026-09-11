@@ -1,6 +1,6 @@
 {
   "name": "zar-skills",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Personal fork of Matt Pocock's agent skills, kept in sync with upstream and extended with own skills.",
   "author": {
     "name": "avangardzar",
