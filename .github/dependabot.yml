@@ -19,6 +19,20 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: chore
+    ignore:
+      # Единственные зависимости здесь — машинерия changesets, от которой
+      # форк отказался (ADR-0005). Обновлять её незачем: она не исполняется.
+      # Удалить её тоже нельзя — upstream ею пользуется, и вычищенные файлы
+      # дали бы конфликт на каждой синхронизации (ADR-0003). Поэтому просто
+      # не трогаем.
+      #
+      # Перечислены только version-updates. Обновления безопасности этим
+      # фильтром не глушатся и придут, если в зависимости найдут дыру.
+      - dependency-name: "@changesets/*"
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
+          - version-update:semver-patch
 
   # Сторонних actions здесь нет намеренно, обновлять пока нечего. Запись
   # стоит заранее: если однажды появится `actions/checkout`, версии
