@@ -1,85 +1,121 @@
-<p>
-  <a href="https://www.aihero.dev/s/skills-newsletter">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://res.cloudinary.com/total-typescript/image/upload/v1777382277/skills-repo-dark_2x.png">
-      <source media="(prefers-color-scheme: light)" srcset="https://res.cloudinary.com/total-typescript/image/upload/v1777382277/skill-repo-light_2x.png">
-      <img alt="Skills" src="https://res.cloudinary.com/total-typescript/image/upload/v1777382277/skill-repo-light_2x.png" width="369">
-    </picture>
-  </a>
-</p>
+# zar-skills
 
-# Skills For Real Engineers
+Личный форк [**mattpocock/skills**](https://github.com/mattpocock/skills) — набора навыков для ИИ-агентов, собранного Мэттом Пококом.
 
-[![skills.sh](https://skills.sh/b/mattpocock/skills)](https://skills.sh/mattpocock/skills)
+## Спасибо первоисточнику
 
-My agent skills that I use every day to do real engineering - not vibe coding.
+Всё содержательное в этом репозитории придумано и написано [Мэттом Пококом](https://github.com/mattpocock). Он вложил в эти навыки десятилетия инженерного опыта, довёл их до состояния, в котором ими можно пользоваться каждый день, и **отдал людям бесплатно, под лицензией MIT** — вместе с документацией, объяснениями и рассуждениями о том, почему устроено именно так.
 
-Developing real applications is hard. Approaches like GSD, BMAD, and Spec-Kit try to help by owning the process. But while doing so, they take away your control and make bugs in the process hard to resolve.
+Это редкая щедрость. Чаще подобное превращают в закрытый продукт или курс, а здесь — открытый репозиторий, который можно читать, копировать и переделывать под себя. Этот форк существует только потому, что такая возможность была дана.
 
-These skills are designed to be small, easy to adapt, and composable. They work with any model. They're based on decades of engineering experience. Hack around with them. Make them your own. Enjoy.
+Если методика окажется полезной и вам — идите к первоисточнику, а не сюда:
 
-If you want to keep up with changes to these skills, and any new ones I create, you can join ~60,000 other devs on my newsletter:
+- **Репозиторий:** https://github.com/mattpocock/skills
+- **Установка для всех:** `claude plugins install mattpocock-skills`
+- **Рассылка автора:** https://www.aihero.dev/s/skills-newsletter
 
-[Sign Up To The Newsletter](https://www.aihero.dev/s/skills-newsletter)
+Оригинальное эссе автора о том, зачем эти навыки нужны, сохранено ниже без изменений.
 
-## Installation (30-second setup)
+## Что это за форк
 
-Two ways in, two philosophies. **The [Claude Code plugin](https://code.claude.com/docs/en/plugins)** installs the whole set as a managed, read-only bundle that updates when I ship, so you subscribe rather than fork. **[skills.sh](https://skills.sh/mattpocock/skills)** copies editable skill files into your project, so you can hack on them and make them your own. Pick one: installing both leaves you with every skill twice.
+Набор Мэтта нужен целиком, но в своей редакции: часть навыков лишняя, часть хочется переписать, часть добавить свою. При этом обновления первоисточника терять нельзя.
 
-### 1. Get the skills
+Форк решает обе задачи сразу. Он одновременно зеркало чужого репозитория, собственная редакция и плагин Claude Code.
 
-<details>
-<summary><strong>Claude Code</strong></summary>
+## Ветки
+
+Три ветки, у каждой **ровно один процесс, который в неё пишет**. Это главное правило конструкции.
+
+| Ветка | Кто пишет | Назначение |
+| --- | --- | --- |
+| `upstream` | только робот синхронизации | **Зеркало.** Точная копия ветки `main` первоисточника |
+| `dev` | только человек | **Работа.** Здесь правятся навыки и разбираются конфликты |
+| `main` | только промоушен из `dev` | **Витрина.** Из неё собирается плагин |
+
+### `upstream` — зеркало
+
+Обновляется автоматически раз в сутки: `.github/workflows/sync-upstream.yml` подтягивает свежий `main` первоисточника через `git merge --ff-only`.
+
+Человек в неё не пишет никогда, и это не соглашение, а защита: ruleset запрещает удаление и force-push, обойти его не может никто, включая владельца репозитория. Как только в зеркало попадёт посторонний коммит, оно перестанет быть зеркалом, а синхронизация начнёт падать — намеренно, вместо того чтобы заминать расхождение merge-коммитом.
+
+### `dev` — работа
+
+Единственная ветка, в которую делаются коммиты. Сюда же целится Dependabot.
+
+Взять новое от Мэтта — тоже здесь: `upstream` мержится в `dev` вручную, конфликты разбираются по смыслу. Автоматически это не происходит: решение «беру / не беру» принимает человек, а не робот.
+
+### `main` — витрина
+
+То, что видят пользователи плагина. Попасть сюда можно только промоушеном.
+
+Коммит, записанный в `main` в обход `dev`, лишает следующий промоушен fast-forward — поэтому ветка защищена ruleset'ом от удаления и force-push.
+
+## Плагин
+
+Плагин называется `zar-skills`. Репозиторий сам себе маркетплейс: `.claude-plugin/marketplace.json` объявляет каталог `zar` с единственным плагином.
+
+### Загрузка идёт из `main`
+
+```json
+"source": { "source": "github", "repo": "avangardzar/skills", "ref": "main" }
+```
+
+Источник указан **веткой**, а не коммитом. Отсюда прямое следствие: **пользователь видит только то, что попало в `main`.** Коммиты в `dev` для него не существуют.
+
+### Установка
 
 ```bash
-claude plugins install mattpocock-skills
+claude plugin marketplace add avangardzar/skills
+claude plugin install zar-skills@zar
 ```
 
-Or, from inside a session:
+Затем перезапустить Claude Code. Навыки вызываются как `/zar-skills:<имя>`, например `/zar-skills:grilling`.
 
-```
-/plugin install mattpocock-skills
-```
-
-It's in Claude Code's official marketplace, so there's nothing to add first, and updates arrive automatically.
-
-</details>
-
-<details>
-<summary><strong>Codex, and other agents</strong></summary>
+### Обновление
 
 ```bash
-npx skills@latest add mattpocock/skills
+claude plugin update zar-skills@zar
 ```
 
-Pick the skills you want, and which coding agents to install them on. **The installer lets you choose which skills to take, so make sure `setup-matt-pocock-skills` is one of them.**
+> **Важно.** Механизм обновления сравнивает поле `version` в `plugin.json`, а не коммит. Если `main` ушёл вперёд, но версия та же, команда ответит `already at the latest version` и ничего не сделает. Поэтому подъём версии — обязательная часть промоушена, а не формальность.
 
-A native Codex plugin is on the roadmap (see [`.agents/adr/0002-ship-as-a-claude-code-plugin.md`](./.agents/adr/0002-ship-as-a-claude-code-plugin.md)).
-
-</details>
-
-<details>
-<summary><strong>For tinkerers</strong></summary>
-
-Use the same installer, on any agent, including Claude Code:
+### Опробовать, не устанавливая
 
 ```bash
-npx skills@latest add mattpocock/skills
+claude --plugin-dir ~/skills
 ```
 
-It writes the skills into your repo as ordinary files you own and can edit. Nothing updates behind your back; pull my latest changes when you want them with `npx skills update`.
+Загружает плагин из каталога только на текущую сессию. Локальный каталог перебивает установленный плагин того же имени.
 
-</details>
+## Промоушен
 
-### 2. Run `/setup-matt-pocock-skills`
+Перенос готового из `dev` в `main`:
 
-In your agent, run it once per repo. It will:
+```bash
+git checkout main && git merge --ff-only dev
+claude plugin validate .
+claude plugin tag                                  # тег zar-skills--v<версия>
+git push origin main
+git push origin refs/tags/zar-skills--v<версия>    # поимённо, не --tags
+```
 
-- Ask you which issue tracker you want to use (GitHub, Linear, or local files)
-- Ask you what labels you apply to tickets when you triage them (`/triage` uses labels)
-- Ask you where you want to save any docs we create
+Версия форка считает **промоушены**, а не релизы первоисточника, и живёт в трёх файлах: `plugin.json`, `package.json` и `package-lock.json` (последний пересобирается через `npm install --package-lock-only`, а не правится руками).
 
-### 3. Bam - you're ready to go.
+Changesets первоисточника в форке не используются. Они остаются на диске нетронутыми: удалять файлы, которые Мэтт продолжает править, значит получить конфликт при каждой синхронизации.
+
+## Что в плагин не попадает
+
+Навыки лежат в бакетах. В плагин едут только `engineering/` и `productivity/`; `misc/`, `in-progress/` и `deprecated/` остаются в репозитории, но пользователю не отдаются.
+
+Список навыков в `.claude-plugin/plugin.json` ведётся **вручную**. Появление у Мэтта нового навыка — повод сознательно решить «беру / не беру», а не повод для молчаливого включения. Ненужный навык исключается из списка, но не удаляется с диска.
+
+## Лицензия
+
+MIT, как и у первоисточника. См. [LICENSE](./LICENSE).
+
+---
+
+*Ниже — оригинальный текст автора первоисточника, сохранён без изменений.*
 
 ## Why These Skills Exist
 
