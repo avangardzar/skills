@@ -16,6 +16,8 @@ Which of the three grilling skills you want depends on what is in front of you:
 - **A codebase to align against**: [grill-with-docs](https://aihero.dev/skills-grill-with-docs). The same interview, but [stateful](https://www.aihero.dev/ai-coding-dictionary/stateful): it reads your code and keeps what it learns in `CONTEXT.md` and ADRs.
 - **Too big for one session**: [wayfinder](https://aihero.dev/skills-wayfinder). It charts the effort as a map and runs grilling sessions inside it.
 
+If you want the docs-writing version but the topic is new to you, [grill-one-by-one](https://aihero.dev/skills-grill-one-by-one) runs that same interview one question at a time instead of in rounds.
+
 Leave [plan mode](https://www.aihero.dev/ai-coding-dictionary/agent-mode) off. Plan mode primes the agent to rush toward producing a plan, which is the opposite of staying in inquiry.
 
 ## It's a conversation, not an interview

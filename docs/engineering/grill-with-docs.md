@@ -14,6 +14,7 @@ Reach for it at the start of a change, in a repo, when the plan is still fuzzy a
 | --- | --- |
 | You aren't working in a working directory at all | [grill-me](https://aihero.dev/skills-grill-me) |
 | A repo, and a change you can settle in one session | `grill-with-docs` |
+| A repo, and a topic that is new to you, so you need to work it out before you can answer | [grill-one-by-one](https://aihero.dev/skills-grill-one-by-one) |
 | An effort too big to hold in one session (a greenfield build, a large feature) | [wayfinder](https://aihero.dev/skills-wayfinder) |
 | A repo with no domain docs at all, and no particular feature in mind | `grill-with-docs`, aimed at the repo rather than a change |
 | A decision blocked on knowledge in someone else's head | [to-questionnaire](https://aihero.dev/skills-to-questionnaire) |
