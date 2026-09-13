@@ -69,15 +69,30 @@ claude plugin marketplace add avangardzar/skills
 claude plugin install zar-skills@zar
 ```
 
-Then restart Claude Code. Skills are invoked as `/zar-skills:<name>`, for example `/zar-skills:grilling`.
+Then turn on auto-update, because Claude Code leaves it off for every marketplace that is not Anthropic's own. Either run `/plugin`, open **Marketplaces**, pick `zar`, and choose **Enable auto-update**, or add the flag to `~/.claude/settings.json`:
+
+```json
+"extraKnownMarketplaces": {
+  "zar": {
+    "source": { "source": "github", "repo": "avangardzar/skills" },
+    "autoUpdate": true
+  }
+}
+```
+
+Restart Claude Code. Skills are invoked as `/zar-skills:<name>`, for example `/zar-skills:grilling`.
+
+The plugin is the only route. A copy of a promoted skill anywhere else (`~/.claude/skills`, a skills.sh install, the upstream `mattpocock-skills` plugin) shows up as an unprefixed duplicate with its own, older text, so remove it rather than keep both.
 
 ### Update
+
+With auto-update on, nothing to do: a few minutes after startup Claude Code pulls whatever `main` holds and asks for `/reload-plugins`. By hand:
 
 ```bash
 claude plugin update zar-skills@zar
 ```
 
-> **Worth knowing.** The update mechanism compares the `version` field in `plugin.json`, not the commit. If `main` has moved ahead but the version has not, the command reports `already at the latest version` and does nothing. That is why bumping the version is a load-bearing step of a promotion rather than a ceremony.
+> **Worth knowing.** `plugin.json` deliberately has no `version`. Without one, Claude Code takes the commit SHA of `main` as the version, so every push to `main` is an update and nothing else has to change for users to receive it. Adding a `version` back would pin users to that string until someone remembers to bump it, which is exactly the step this setup removes. CI rejects a manifest that carries one.
 
 ### Try it without installing
 
@@ -93,13 +108,13 @@ Moving finished work from `dev` to `main`:
 
 ```bash
 git checkout main && git merge --ff-only dev
-claude plugin validate .
-claude plugin tag                                  # creates zar-skills--v<version>
+claude plugin validate . --strict
 git push origin main
-git push origin refs/tags/zar-skills--v<version>   # by name, never --tags
 ```
 
-The fork's version counts **promotions**, not upstream releases, and it lives in three files: `plugin.json`, `package.json`, and `package-lock.json`. The last one is regenerated with `npm install --package-lock-only` rather than edited by hand.
+That push is the release. There is no version to bump and no tag to cut: the `main` commit it lands on is the version users get. The old `zar-skills--v*` tags stay as history. `package.json` still carries a `version`, but that is upstream's npm metadata and says nothing about the plugin.
+
+When merging `upstream` into `dev`, upstream's `plugin.json` has its own `version`. Resolve that conflict by keeping it out.
 
 Upstream's changesets machinery is unused here, and left on disk untouched. Deleting files that upstream keeps editing would buy a conflict on every mirror sync.
 

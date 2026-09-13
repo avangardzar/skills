@@ -57,22 +57,34 @@ for DEST in "${DESTS[@]}"; do
 
   mkdir -p "$DEST"
 
-  # Clear out promoted skills an earlier run linked here, from this clone or
-  # any other clone of the repo. Anything else under a promoted name is not
-  # ours to delete, so it is only reported.
+  # Clear out every link an earlier run left that this run would not make: a
+  # promoted skill (the plugin's duplicate), a skill since renamed, moved to
+  # another bucket, or deleted (a dangling link), and links from any other
+  # clone of the repo. A link is ours when it points at skills/<bucket>/<name>.
+  for target in "$DEST"/*; do
+    [ -L "$target" ] || continue
+    name="$(basename "$target")"
+    link="$(readlink "$target")"
+    case "$link" in
+      */skills/engineering/"$name"|*/skills/productivity/"$name"|*/skills/in-progress/"$name"|*/skills/misc/"$name"|*/skills/deprecated/"$name") ;;
+      *) continue ;;
+    esac
+    wanted=false
+    for src in ${srcs[@]+"${srcs[@]}"}; do
+      if [ "$link" = "$src" ]; then wanted=true; break; fi
+    done
+    if [ "$wanted" = false ]; then
+      rm "$target"
+      echo "removed stale link $name -> $link ($DEST)"
+    fi
+  done
+
+  # Anything left under a promoted name is not ours to delete, but it hides
+  # or duplicates the plugin's skill, so say so.
   for name in ${promoted[@]+"${promoted[@]}"}; do
     target="$DEST/$name"
-    if [ -L "$target" ]; then
-      case "$(readlink "$target")" in
-        */skills/engineering/"$name"|*/skills/productivity/"$name")
-          rm "$target"
-          echo "removed plugin duplicate $name ($DEST)"
-          continue
-          ;;
-      esac
-    fi
     if [ -e "$target" ] || [ -L "$target" ]; then
-      echo "warning: $target shadows the plugin's $name and was left alone." >&2
+      echo "warning: $target duplicates the plugin's $name and was left alone." >&2
     fi
   done
 

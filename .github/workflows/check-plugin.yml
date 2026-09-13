@@ -1,0 +1,40 @@
+name: Check plugin manifest
+
+# Не пускает в `dev` и `main` манифест, из-за которого пользователи плагина
+# перестанут получать обновления или получат не тот набор скиллов:
+# `version` в plugin.json (обновления приходят по SHA коммита в `main`) и
+# расхождение списка `skills` с промоутированными бакетами. Сама проверка
+# лежит в scripts/check-plugin-manifest.mjs, её же можно запустить локально.
+#
+# Сторонних действий нет по той же причине, что и в sync-upstream.yml: хватает
+# git и node, которые на раннере уже есть.
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+    branches: [dev, main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Manifest matches the promoted set
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fetch the commit under test
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git init --quiet repo
+          cd repo
+          git fetch --quiet --no-tags --depth 1 \
+            "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$GITHUB_REF"
+          git checkout --quiet FETCH_HEAD
+
+      - name: Check the manifest
+        working-directory: repo
+        run: node scripts/check-plugin-manifest.mjs
