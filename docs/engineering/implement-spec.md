@@ -21,6 +21,10 @@ You invoke this by typing `/implement-spec`, and the agent won't reach for it on
 - **Tickets with blocking edges**, as [to-tickets](https://aihero.dev/skills-to-tickets) writes them. Without edges the graph is flat and every ticket starts at once.
 - **A [harness](https://www.aihero.dev/ai-coding-dictionary/harness) that runs subagents in the background and gives each one a git worktree.** The skill exists to run tickets at the same time, so on a harness that runs subagents one at a time, it is only a slower `implement`.
 
+## Threats before the frontier
+
+Before any implementer starts, the orchestrator runs [threat-modeling](https://aihero.dev/skills-threat-modeling) on the spec and every ticket against the code they touch, and settles each gap with you. It has to happen here: implementers run in the background and cannot stop to ask.
+
 ## The integration branch
 
 Everything lands on one branch. Each implementer:

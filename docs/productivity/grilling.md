@@ -28,6 +28,8 @@ Inside a round, every question has a fixed format: numbered and titled behind a 
 
 The other half of the design is the split between facts and decisions. Facts are the skill's own job. When a frontier question needs something the [environment](https://www.aihero.dev/ai-coding-dictionary/environment) can settle, the agent dispatches a [sub-agent](https://www.aihero.dev/ai-coding-dictionary/subagent) to find out rather than asking you. The round does not wait for that research; only the questions that depend on it wait. Decisions are yours, and the agent must wait for them. An agent running `grilling` that answers its own decisions has broken the skill. The session ends when the frontier is empty. The agent then waits for you to confirm a shared understanding before it acts on what you agreed.
 
+When the plan touches code, the tree carries a security branch: the agent runs [threat-modeling](https://aihero.dev/skills-threat-modeling) and puts each gap it finds to you as a question.
+
 The frontier has one limit. The agent chooses it by judgement; it does not compute it from a graph. So it can put two questions in one round and only later find that one answer should have changed the other. The only guard is to tell it. That reopens the affected branch in the next round.
 
 ## What lives here and what lives in the wrappers

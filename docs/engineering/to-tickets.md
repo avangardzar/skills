@@ -28,6 +28,8 @@ A **horizontal** slice ships one layer of the change. Nothing works until every 
 
 This is the rule people break most often. One team ran a 26-ticket stack sliced by layer (corpus, producer, aggregator, selector) and got roughly twenty agent runs per closed ticket, about three quarters of them rework. Their own post-mortem traced every failure class back to the horizontal slicing rather than to the implementations.
 
+A slice that opens an entry point carries its own defenses: each row of the spec's threats table (or of a fresh [threat-modeling](https://aihero.dev/skills-threat-modeling) pass when there is no table) becomes an acceptance criterion with its failure test, in the same ticket. Security never waits for a later ticket.
+
 Two things happen before anything is published. `to-tickets` looks for prefactoring (the principle "make the change easy, then make the easy change") and orders that work first. Then it presents the breakdown as a numbered list and quizzes you on it: is the granularity right, are the blocking edges real, should anything merge or split. Nothing reaches the tracker until you approve, and that quiz is the place to push back.
 
 ## Blocking edges

@@ -30,13 +30,14 @@ If the tickets came from [to-tickets](https://aihero.dev/skills-to-tickets), [se
 
 ## What one run does
 
-A run has five steps, in order:
+A run has six steps, in order:
 
 1. Read the ticket or spec and work out the seams.
-2. Drive [tdd](https://aihero.dev/skills-tdd) at the pre-agreed seams, one red-green slice at a time.
-3. Typecheck often, run single test files as it goes.
-4. Run the full test suite once, at the end.
-5. Run [code-review](https://aihero.dev/skills-code-review), then commit to the current branch.
+2. Run [threat-modeling](https://aihero.dev/skills-threat-modeling) on the work and the code it touches. A gap stops the run before any code: you agree the fix, the ticket and spec are amended, then the build starts. This catches what planning missed, tickets written before the threat list existed, and work that never went through planning.
+3. Drive [tdd](https://aihero.dev/skills-tdd) at the pre-agreed seams, one red-green slice at a time.
+4. Typecheck often, run single test files as it goes.
+5. Run the full test suite once, at the end.
+6. Run [code-review](https://aihero.dev/skills-code-review), then commit to the current branch.
 
 One run covers one ticket. The tickets [to-tickets](https://aihero.dev/skills-to-tickets) produces are tracer-bullet vertical slices sized to fit a single fresh [context window](https://www.aihero.dev/ai-coding-dictionary/context-window), so the intended rhythm is: clear context, implement one ticket, commit, clear again. Each ticket is self-contained, so you can discard the previous ticket's context.
 

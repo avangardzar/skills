@@ -20,6 +20,8 @@ Format a question like so:
 
 The moment the user answers, record the decision on one line, `✅ <what was decided>`, then ask the next question. Never let answers pile up unrecorded.
 
+When the plan touches code, the design tree carries a security branch: call the Skill tool with "threat-modeling" and put each gap it finds to the user as a question.
+
 Finding _facts_ is your job, never the user's. When a question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent to find it instead of asking the user. While that sub-agent runs, ask a question that does not depend on it. The _decisions_ are the user's: put each to them and wait.
 
 The session is done when every branch of the design tree has been visited and nothing is left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.

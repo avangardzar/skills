@@ -27,6 +27,10 @@ The spec exists because context windows end. You settled many things while [gril
 
 So the spec does not validate or decide anything. It records what you decided, in your project's own vocabulary, so a fresh session can pick up the work without you explaining it again. If the spec states something you never said, that is a defect.
 
+## Threats in the record
+
+The spec carries a **Threats and Defenses** table from [threat-modeling](https://aihero.dev/skills-threat-modeling): each entry point, its threat, the defense, and the failure test that proves it. A gap the threat list finds is put to you before the spec is written, because a defense is a decision like any other.
+
 ## Seams before prose
 
 Before it writes anything, `to-spec` sketches the **seams** where the feature will be tested, and checks them with you. It prefers existing seams to new ones, and picks the highest seam it can. The ideal number of seams for a change is one.

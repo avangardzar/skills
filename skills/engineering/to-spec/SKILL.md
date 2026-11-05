@@ -16,7 +16,9 @@ The issue tracker and triage label vocabulary should have been provided to you. 
 
 Check with the user that these seams match their expectations.
 
-3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
+3. Call the Skill tool with "threat-modeling" on the solution. Put each gap it finds to the user before writing the spec.
+
+4. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
 
 <spec-template>
 
@@ -63,6 +65,10 @@ A list of testing decisions that were made. Include:
 - A description of what makes a good test (only test external behavior, not implementation details)
 - Which modules will be tested
 - Prior art for the tests (i.e. similar types of tests in the codebase)
+
+## Threats and Defenses
+
+The table from `threat-modeling`: entry point → threat → defense → failure test. If the work crosses no trust boundary, one line saying why.
 
 ## Out of Scope
 
