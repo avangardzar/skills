@@ -67,7 +67,7 @@ Three model-invoked references that run *beneath* the other skills, each the sin
 
 - **`/domain-modeling`**: sharpen the project's *domain* language: challenge a fuzzy term, resolve an overloaded word ("account" doing three jobs), record a hard-to-reverse decision as an ADR. It's the active discipline `/grill-with-docs` drives to keep `GLOSSARY.md` a clean glossary.
 - **`/codebase-design`** is the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) for designing a module's *shape*: a lot of behaviour behind a small interface at a clean seam. `/tdd` and `/improve-codebase-architecture` both speak it.
-- **`/threat-modeling`** is the attacker's question list (authenticity, object rights, input as code, cost per sender, replay, privilege, secrets, platform failure, supply chain, failure test). The grilling skills, `/to-spec`, `/to-tickets`, `/implement`, `/implement-spec`, and `/tdd` pull it in; reach for it directly when the question is "how could this be attacked?"
+- **`/threat-modeling`** is the attacker's question list: every entry point a change touches, ten questions on each, a failure test per defense. The grilling skills, `/to-spec`, `/to-tickets`, `/implement`, `/implement-spec`, and `/tdd` pull it in; reach for it directly when the question is "how could this be attacked?"
 
 ## Phase boundaries
 

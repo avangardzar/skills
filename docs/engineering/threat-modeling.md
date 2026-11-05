@@ -2,11 +2,11 @@
 
 `threat-modeling` is the attacker's question list for a change. It maps the **attack surface** (every entry point where data or authority crosses a trust boundary), runs ten questions on each one, and records the answer as a table: entry point, threat, defense, failure test. A row with no defense is a **gap**, and a gap is your decision.
 
-Every answer needs evidence: a `file:line`, or the spec or ticket item that will build it. "Not applicable" needs a reason. The list assumes an attacker who has read all of the code and runs automated tools (including LLMs tuned to find holes) that never get tired and chain small weaknesses together. A checklist ticked from memory cannot match that.
+Every answer needs evidence: a `file:line`, or the [spec](https://www.aihero.dev/ai-coding-dictionary/spec) or [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket) item that will build it. "Not applicable" needs a reason. The list assumes an attacker who has read all of the code and runs automated tools (including [models](https://www.aihero.dev/ai-coding-dictionary/model) tuned to find holes) that never get tired and chain small weaknesses together. A checklist ticked from memory cannot match that.
 
 ## When to reach for it
 
-Type `/threat-modeling`, or the agent reaches for it automatically when a task fits. Most runs are pulled in by other skills:
+Type `/threat-modeling`, or the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reaches for it automatically when a task fits. Most runs are pulled in by other skills:
 
 | Skill | When it runs the list |
 | --- | --- |
@@ -16,7 +16,7 @@ Type `/threat-modeling`, or the agent reaches for it automatically when a task f
 | [implement](https://aihero.dev/skills-implement), [implement-spec](https://aihero.dev/skills-implement-spec) | before the first line of code |
 | [tdd](https://aihero.dev/skills-tdd) | when an entry point has no named defense |
 
-Reach for it directly when the question is "how could this be attacked?". Review needs no extra step: put the security rule in your repo's coding standard and [code-review](https://aihero.dev/skills-code-review) checks it on the Standards axis.
+Reach for it directly when the question is "how could this be attacked?". Review needs no change to [code-review](https://aihero.dev/skills-code-review): put a security rule naming this skill in your repo's coding standard, and the Standards reviewer reaches for the list when it reads that rule.
 
 ## The ten questions
 
@@ -35,4 +35,4 @@ Planning cannot see everything. A ticket written before the list existed, work t
 
 ## Where it fits
 
-A **model-invoked reference** under the main chain (`grill-with-docs → to-spec → to-tickets → implement → code-review`). Like [codebase-design](https://aihero.dev/skills-codebase-design), it holds one shared list that other skills call. The map of the whole set is [ask-matt](https://aihero.dev/skills-ask-matt).
+A **reach-for-it-anytime standalone** that the main chain (`grill-with-docs → to-spec → to-tickets → implement → code-review`) also pulls in at every step. Like [codebase-design](https://aihero.dev/skills-codebase-design), it holds one shared list that other skills call. The map of the whole set is [ask-matt](https://aihero.dev/skills-ask-matt).

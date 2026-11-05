@@ -18,7 +18,7 @@ Communication to and from subagents should be sparse. Communicate primarily thro
 
 ## Steps
 
-1. Read the spec and tickets to understand the task graph. Then call the Skill tool with "threat-modeling" on the spec and every ticket, against the code they touch. Settle every gap with the user and amend the spec and tickets before step 3: **implementer subagents** run in the background and cannot stop to ask.
+1. Read the spec and tickets to understand the task graph. Then call the Skill tool with "threat-modeling" on the spec and every ticket, against the code they touch, and close every gap it finds before step 3: **implementer subagents** run in the background and cannot stop to ask.
 
 2. (optional) Use an **exploration subagent** to conduct any exploration required by the tickets - relevant codebase files or external documentation. Ensure the exploration subagent can save files - it should save its markdown notes in a directory outside the repo, accessible by all future subagents. This lets **implementer subagents** focus on implementation rather than exploration.
 

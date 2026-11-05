@@ -16,7 +16,7 @@ The issue tracker and triage label vocabulary should have been provided to you. 
 
 Check with the user that these seams match their expectations.
 
-3. Call the Skill tool with "threat-modeling" on the solution. Put each gap it finds to the user before writing the spec.
+3. Call the Skill tool with "threat-modeling" on the solution. A gap it finds is a decision nobody has made yet, so it is the one question this skill asks: put each gap to the user before writing the spec.
 
 4. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
 

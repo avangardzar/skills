@@ -32,7 +32,7 @@ Break the work into **tracer bullet** tickets.
 - A completed slice is demoable or verifiable on its own
 - Each slice is sized to fit in a single fresh context window
 - Any prefactoring should be done first
-- A slice that opens an entry point ships its defenses in the same ticket: each defense from the spec's threats table (or from calling the Skill tool with "threat-modeling" when there is no table) becomes an acceptance criterion with its failure test
+- A slice that adds or touches an entry point ships its defenses in the same ticket, each one an acceptance criterion; they come from the spec's Threats and Defenses table, or from calling the Skill tool with "threat-modeling" when there is none
 
 </vertical-slice-rules>
 

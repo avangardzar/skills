@@ -29,7 +29,7 @@ So the spec does not validate or decide anything. It records what you decided, i
 
 ## Threats in the record
 
-The spec carries a **Threats and Defenses** table from [threat-modeling](https://aihero.dev/skills-threat-modeling): each entry point, its threat, the defense, and the failure test that proves it. A gap the threat list finds is put to you before the spec is written, because a defense is a decision like any other.
+The spec carries a **Threats and Defenses** table from [threat-modeling](https://aihero.dev/skills-threat-modeling): each entry point, its threat, the defense, and the failure test that proves it. This is the one exception to the no-interview rule: a gap the threat list finds is a decision nobody has made yet, so it is put to you before the spec is written.
 
 ## Seams before prose
 

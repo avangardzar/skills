@@ -29,7 +29,7 @@ The `✅` line is the load-bearing part, and it is what the rounds version has n
 
 The record lives in the dialogue. Nothing on disk is a decision log: the glossary and the ADRs stay exactly what [domain-modeling](https://aihero.dev/skills-domain-modeling) makes them, written as terms resolve rather than as questions close.
 
-When the plan touches code, the agent runs [threat-modeling](https://aihero.dev/skills-threat-modeling) and asks each gap it finds as one of the questions.
+When the plan touches code, the agent runs [threat-modeling](https://aihero.dev/skills-threat-modeling), and each gap it finds becomes one of the questions.
 
 Facts remain the agent's job. When a question turns on something the filesystem or the tools can answer, it dispatches a [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) and asks you a question that does not depend on the answer meanwhile. You are only ever asked for decisions.
 
