@@ -17,3 +17,19 @@ Run typechecking regularly, single test files regularly, and the full test suite
 Once done, call the Skill tool with "code-review" to review the work.
 
 Commit your work to the current branch.
+
+🔴 STOP — when to stop
+
+Stop work if at least one of these conditions is met:
+- the solution in the ticket is malicious or architecturally suboptimal;
+- the implementation requires additional decisions that the ticket does not provide.
+
+What to do:
+1. Describe the problem in the ticket: the issue and its rationale, 2–3 sentences.
+2. Propose a solution that follows industry standards, with links to authoritative sources (documentation, RFCs, OWASP, etc.). The solution must fix the root cause, not the symptom: working around the symptom is not allowed.
+3. Do not continue until the user has approved the solution.
+
+Problem outside the scope of the current task (does not block it):
+1. Check whether a duplicate already exists in [taxi-avangard/issues](https://github.com/avangardzar/taxi-avangard/issues).
+2. If there is no duplicate, create a GitHub Issue: priority, problem description, proposed solution.
+3. Continue the main task without stopping.
